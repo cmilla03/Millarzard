@@ -333,3 +333,13 @@ This version adds Supabase account support:
 - Added `supabase/profiles_schema.sql`.
 - Added `SUPABASE_SETUP.md`.
 - Existing room/game/card/scoring logic was not changed.
+
+
+## Milestone 14B update
+
+This version fixes the Netlify dependency install issue:
+
+- Added `.npmrc` files that force npm to use the public npm registry.
+- Removed generated `package-lock.json` files that may reference an internal registry.
+- Cleaned the Netlify build command so Netlify installs dependencies normally, then runs `npm run build`.
+- Supabase account/profile code is unchanged.

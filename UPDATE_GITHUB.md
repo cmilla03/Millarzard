@@ -30,3 +30,34 @@ VITE_SERVER_URL=https://millarzard.onrender.com
 ```
 
 No new Render variables are needed.
+
+
+## Netlify registry fix
+
+If Netlify failed during dependency installation with an internal registry URL, this version fixes it.
+
+Upload these files/folders to GitHub:
+
+```text
+.npmrc
+client
+server
+supabase
+DEPLOYMENT.md
+README.md
+render.yaml
+SUPABASE_SETUP.md
+UPDATE_GITHUB.md
+```
+
+Commit message:
+
+```text
+Fix Netlify npm registry for Supabase deploy
+```
+
+Then in Netlify, redeploy with:
+
+```text
+Deploys → Trigger deploy → Clear cache and deploy site
+```
