@@ -321,3 +321,15 @@ This version adds a first profile/login system without changing gameplay:
 - This version does not require a database or extra environment variables.
 - Because it uses browser storage, the profile is saved on that device/browser only.
 - Future upgrade: replace local profiles with Supabase/Firebase accounts for cross-device login.
+
+## Milestone 14 update
+
+This version adds Supabase account support:
+
+- Email/password sign in and account creation.
+- Cross-device profile saving through Supabase.
+- Saved name, avatar, wins, and games played.
+- Local browser profile remains as fallback if Supabase variables are not configured.
+- Added `supabase/profiles_schema.sql`.
+- Added `SUPABASE_SETUP.md`.
+- Existing room/game/card/scoring logic was not changed.

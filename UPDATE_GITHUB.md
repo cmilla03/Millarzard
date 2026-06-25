@@ -1,30 +1,32 @@
 # Updating the live MillarZard site
 
-This update adds the first local profile/login system.
+This update adds Supabase account support.
 
 ## Upload to GitHub
 
 Replace the current project files with the contents of this folder, then commit with:
 
 ```text
-Add local profile login system
+Add Supabase account profiles
 ```
 
 Netlify and Render should redeploy automatically.
 
-## Important
+## New setup required
 
-No new environment variables are needed for this version.
+Before the live account system works, complete `SUPABASE_SETUP.md`.
 
-The profile is stored in the player's browser using localStorage. That means:
-- It works immediately on the live website.
-- It saves on that device/browser.
-- It is not yet a true cross-device account system.
+You need to add these Netlify environment variables:
 
-## Test after deployment
+```text
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your-publishable-or-anon-key
+```
 
-1. Open the Netlify site.
-2. Create a profile.
-3. Create a room.
-4. Finish a game.
-5. Confirm wins/games update on the home screen.
+Keep the existing Netlify variable:
+
+```text
+VITE_SERVER_URL=https://millarzard.onrender.com
+```
+
+No new Render variables are needed.
