@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: wizard-table-server
+    name: millarzard-server
     env: node
     rootDir: server
     buildCommand: npm install
