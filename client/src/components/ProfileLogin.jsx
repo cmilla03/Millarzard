@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import AvatarDisplay from "./AvatarDisplay";
+import AvaturnAvatarModal from "./AvaturnAvatarModal";
 import { buildProfile } from "../profileStorage";
 
 const DEFAULT_AVATAR = {
@@ -121,6 +122,7 @@ function ProfileLogin({ existingProfile, onSaveProfile, onCancelEdit }) {
   const [avatar, setAvatar] = useState(existingProfile?.avatar || DEFAULT_AVATAR);
   const [activeTab, setActiveTab] = useState("Face");
   const [error, setError] = useState("");
+  const [showAvaturn, setShowAvaturn] = useState(false);
 
   function updateAvatar(key, value) {
     setAvatar((current) => ({ ...current, [key]: value }));
@@ -171,6 +173,45 @@ function ProfileLogin({ existingProfile, onSaveProfile, onCancelEdit }) {
 
       {error && <p className="error">{error}</p>}
 
+      <section className="avatar-choice-intro">
+        <h2>Choose how to make your avatar</h2>
+        <p>
+          Selfie avatars are completely optional. You can use the standard avatar builder or keep a default avatar without uploading a face photo.
+        </p>
+
+        <div className="avatar-choice-cards">
+          <button
+            type="button"
+            className="avatar-choice-card avatar-choice-card-active"
+            onClick={() => setActiveTab("Face")}
+          >
+            <span className="avatar-choice-icon">🎨</span>
+            <strong>Standard Builder</strong>
+            <span>No photo needed. Customize face, hair, eyes, mouth, and background.</span>
+          </button>
+
+          <button
+            type="button"
+            className="avatar-choice-card"
+            onClick={() => setShowAvaturn(true)}
+          >
+            <span className="avatar-choice-icon">📷</span>
+            <strong>Selfie Avatar</strong>
+            <span>Optional Avaturn creator for people who want to use a face photo.</span>
+          </button>
+
+          <button
+            type="button"
+            className="avatar-choice-card"
+            onClick={() => setAvatar(DEFAULT_AVATAR)}
+          >
+            <span className="avatar-choice-icon">✅</span>
+            <strong>Use Default</strong>
+            <span>Skip customization for now. You can edit your avatar later.</span>
+          </button>
+        </div>
+      </section>
+
       <section className="profile-login-layout">
         <aside className="profile-preview-card">
           <AvatarDisplay avatar={avatar} size="large" />
@@ -196,6 +237,10 @@ function ProfileLogin({ existingProfile, onSaveProfile, onCancelEdit }) {
 
           <button type="button" className="small-button" onClick={randomizeAvatar}>
             Randomize Avatar
+          </button>
+
+          <button type="button" className="secondary-button" onClick={() => setShowAvaturn(true)}>
+            Optional: Create Selfie Avatar
           </button>
         </aside>
 
@@ -271,8 +316,18 @@ function ProfileLogin({ existingProfile, onSaveProfile, onCancelEdit }) {
       </div>
 
       <p className="profile-note">
-        This first profile version saves on this browser. Later we can upgrade it to real cross-device accounts with Supabase.
+        Face-photo avatar creation is optional. The standard builder and default avatar work without uploading any photo.
       </p>
+
+      {showAvaturn && (
+        <AvaturnAvatarModal
+          onClose={() => setShowAvaturn(false)}
+          onSaveAvatar={(newAvatar) => {
+            setAvatar(newAvatar);
+            setShowAvaturn(false);
+          }}
+        />
+      )}
     </section>
   );
 }

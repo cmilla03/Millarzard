@@ -5,7 +5,28 @@ function isCustomAvatar(avatar) {
   return avatar && typeof avatar === "object" && avatar.kind === "custom";
 }
 
+function isAvaturnAvatar(avatar) {
+  return avatar && typeof avatar === "object" && avatar.kind === "avaturn" && avatar.url;
+}
+
 function AvatarDisplay({ avatar, size = "medium" }) {
+  if (isAvaturnAvatar(avatar)) {
+    return (
+      <div className={`custom-avatar avaturn-avatar avatar-${size}`} style={{ "--avatar-bg": avatar.bg || "#9dffbf" }}>
+        <model-viewer
+          src={avatar.url}
+          auto-rotate
+          interaction-prompt="none"
+          exposure="1"
+          shadow-intensity="0.25"
+          camera-orbit="0deg 80deg 2.2m"
+          field-of-view="25deg"
+          class="avaturn-model-viewer"
+        />
+      </div>
+    );
+  }
+
   if (!isCustomAvatar(avatar)) {
     return <div className={`custom-avatar emoji-avatar avatar-${size}`}>{avatar || "🙂"}</div>;
   }

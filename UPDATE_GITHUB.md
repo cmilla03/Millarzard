@@ -84,3 +84,63 @@ Then in Netlify:
 ```text
 Deploys → Trigger deploy → Clear cache and deploy site
 ```
+
+
+## Milestone 15 Avaturn update
+
+Upload these files/folders to GitHub:
+
+```text
+.npmrc
+client
+server
+supabase
+AVATURN_SETUP.md
+DEPLOYMENT.md
+README.md
+render.yaml
+SUPABASE_SETUP.md
+UPDATE_GITHUB.md
+```
+
+Commit message:
+
+```text
+Add Avaturn selfie avatar creator
+```
+
+Then Netlify should redeploy. If not, trigger:
+
+```text
+Deploys → Trigger deploy → Clear cache and deploy site
+```
+
+
+## Milestone 15B avatar opt-out update
+
+Upload these files/folders to GitHub:
+
+```text
+.npmrc
+client
+server
+supabase
+AVATURN_SETUP.md
+DEPLOYMENT.md
+README.md
+render.yaml
+SUPABASE_SETUP.md
+UPDATE_GITHUB.md
+```
+
+Commit message:
+
+```text
+Make selfie avatar optional
+```
+
+Then Netlify should redeploy. If needed, trigger:
+
+```text
+Deploys → Trigger deploy → Clear cache and deploy site
+```

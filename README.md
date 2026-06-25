@@ -352,3 +352,27 @@ This version fixes the Netlify install failure by including a clean `client/pack
 - The lockfile does not reference the internal OpenAI package registry.
 - `.npmrc` files are included at the root and client level to force `https://registry.npmjs.org/`.
 - Supabase account/profile code is unchanged.
+
+
+## Milestone 15 update
+
+This version adds Avaturn selfie avatar creation:
+
+- Added `Create Selfie Avatar` to profile setup/edit profile.
+- Embeds the Avaturn web creator using `https://millarzard.avaturn.dev`.
+- Saves Avaturn export data to the player's Supabase profile.
+- Displays Avaturn GLB avatars using `<model-viewer>`.
+- Keeps the existing CSS avatar builder as a fallback/alternative.
+- No gameplay/scoring/card logic changed.
+
+
+## Milestone 15B update
+
+This version makes face-photo avatar creation clearly optional:
+
+- Added three avatar choices: Standard Builder, Selfie Avatar, and Use Default.
+- Standard Builder is the default/safest path and does not use a photo.
+- Selfie Avatar is labeled optional.
+- Use Default lets players skip customization and still play.
+- Added privacy-friendly wording explaining that no face photo is required.
+- Gameplay/scoring/card logic unchanged.
