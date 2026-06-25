@@ -1,4 +1,4 @@
-# Wizard Table - Milestone 2
+# MillarZard - Milestone 2
 
 This version adds deck creation, shuffling, dealing, trump card flipping, and a basic game table screen.
 
@@ -22,7 +22,7 @@ Open two terminal windows.
 ### Terminal 1: server
 
 ```bash
-cd ~/Downloads/wizard-table-milestone-2/server
+cd ~/Downloads/millarzard-milestone-2/server
 npm install
 npm run dev
 ```
@@ -30,7 +30,7 @@ npm run dev
 ### Terminal 2: client
 
 ```bash
-cd ~/Downloads/wizard-table-milestone-2/client
+cd ~/Downloads/millarzard-milestone-2/client
 npm install
 npm run dev
 ```
@@ -296,3 +296,14 @@ This version prepares the app for deployment:
 - Added Netlify config for the frontend.
 - Added Render blueprint for the backend.
 - Added `DEPLOYMENT.md`.
+
+
+## Milestone 12 update
+
+Branding cleanup only:
+
+- Updated visible app branding to MillarZard.
+- Updated browser tab title to MillarZard.
+- Updated backend running message to MillarZard server is running.
+- Updated project/deployment text where needed.
+- Gameplay, rules, deck logic, scoring, bidding, Socket.IO events, and card terms were not changed.

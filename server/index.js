@@ -37,7 +37,7 @@ const io = new Server(httpServer, {
 const PORT = process.env.PORT || 3001;
 
 app.get("/", (req, res) => {
-  res.send("Wizard Table server is running.");
+  res.send("MillarZard server is running.");
 });
 
 function emitLobbyState(room) {

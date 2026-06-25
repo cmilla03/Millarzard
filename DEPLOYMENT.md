@@ -1,4 +1,4 @@
-# Wizard Table Deployment Guide
+# MillarZard Deployment Guide
 
 This version is prepared for deployment.
 

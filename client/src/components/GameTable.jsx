@@ -199,7 +199,7 @@ function GameTable({
     <section className="cm-game">
       <header className="cm-topbar">
         <div>
-          <strong>Wizard Table</strong>
+          <strong>MillarZard</strong>
           <span>Room {room.roomCode}</span>
         </div>
 

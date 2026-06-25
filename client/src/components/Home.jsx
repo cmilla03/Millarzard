@@ -156,7 +156,7 @@ function Home({ onCreateRoom, onJoinRoom, errorMessage }) {
 
   return (
     <section className="card-panel home-panel polished-home-panel">
-      <h1>Wizard Table</h1>
+      <h1>MillarZard</h1>
       <p className="subtitle">Private rooms for 3–12 players.</p>
 
       {errorMessage && <p className="error">{errorMessage}</p>}
