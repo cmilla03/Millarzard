@@ -61,3 +61,26 @@ Then in Netlify, redeploy with:
 ```text
 Deploys → Trigger deploy → Clear cache and deploy site
 ```
+
+
+## Milestone 14C deploy fix
+
+Upload this version to GitHub and make sure this file exists in the repo after upload:
+
+```text
+client/package-lock.json
+```
+
+That file is important because it replaces the old lockfile that pointed Netlify to the internal registry.
+
+Commit message:
+
+```text
+Fix npm lockfile registry
+```
+
+Then in Netlify:
+
+```text
+Deploys → Trigger deploy → Clear cache and deploy site
+```

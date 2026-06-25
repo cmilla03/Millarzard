@@ -343,3 +343,12 @@ This version fixes the Netlify dependency install issue:
 - Removed generated `package-lock.json` files that may reference an internal registry.
 - Cleaned the Netlify build command so Netlify installs dependencies normally, then runs `npm run build`.
 - Supabase account/profile code is unchanged.
+
+
+## Milestone 14C update
+
+This version fixes the Netlify install failure by including a clean `client/package-lock.json`.
+
+- The lockfile does not reference the internal OpenAI package registry.
+- `.npmrc` files are included at the root and client level to force `https://registry.npmjs.org/`.
+- Supabase account/profile code is unchanged.
