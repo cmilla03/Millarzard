@@ -4,9 +4,17 @@ import socket from "./socket";
 import Home from "./components/Home";
 import Lobby from "./components/Lobby";
 import GameTable from "./components/GameTable";
+import ProfileLogin from "./components/ProfileLogin";
+import { clearProfile, loadProfile, recordCompletedGame, saveProfile } from "./profileStorage";
 import "./styles.css";
 
+function getGameRecordKey(profileId, roomCode) {
+  return `millarzard-game-recorded-${profileId}-${roomCode}`;
+}
+
 function App() {
+  const [profile, setProfile] = useState(() => loadProfile());
+  const [editingProfile, setEditingProfile] = useState(false);
   const [room, setRoom] = useState(null);
   const [yourPlayerId, setYourPlayerId] = useState(null);
   const [yourHand, setYourHand] = useState([]);
@@ -43,12 +51,52 @@ function App() {
     };
   }, []);
 
-  function createRoom(playerName, playerAvatar) {
-    socket.emit("createRoom", { playerName, playerAvatar });
+  useEffect(() => {
+    if (!profile || !room || room.phase !== "GAME_OVER" || !yourPlayerId) {
+      return;
+    }
+
+    const recordKey = getGameRecordKey(profile.id, room.roomCode);
+
+    if (window.localStorage.getItem(recordKey)) {
+      return;
+    }
+
+    const rankedPlayers = [...room.players].sort((a, b) => b.totalScore - a.totalScore);
+    const winner = rankedPlayers[0];
+    const didWin = winner?.id === yourPlayerId;
+
+    const updatedProfile = recordCompletedGame(profile, didWin);
+    saveProfile(updatedProfile);
+    window.localStorage.setItem(recordKey, "true");
+    setProfile(updatedProfile);
+  }, [room, yourPlayerId, profile]);
+
+  function handleSaveProfile(updatedProfile) {
+    saveProfile(updatedProfile);
+    setProfile(updatedProfile);
+    setEditingProfile(false);
+    setErrorMessage("");
   }
 
-  function joinRoom(playerName, roomCode, playerAvatar) {
-    socket.emit("joinRoom", { playerName, roomCode, playerAvatar });
+  function handleLogout() {
+    clearProfile();
+    setProfile(null);
+    setEditingProfile(false);
+    setRoom(null);
+    setYourPlayerId(null);
+    setYourHand([]);
+    setErrorMessage("");
+  }
+
+  function createRoom() {
+    if (!profile) return;
+    socket.emit("createRoom", { playerName: profile.name, playerAvatar: profile.avatar });
+  }
+
+  function joinRoom(roomCode) {
+    if (!profile) return;
+    socket.emit("joinRoom", { playerName: profile.name, roomCode, playerAvatar: profile.avatar });
   }
 
   function startGame() {
@@ -79,12 +127,27 @@ function App() {
     socket.emit("restartGame", { roomCode: room.roomCode });
   }
 
+  if (!profile || editingProfile) {
+    return (
+      <main className="app">
+        <ProfileLogin
+          existingProfile={editingProfile ? profile : null}
+          onSaveProfile={handleSaveProfile}
+          onCancelEdit={editingProfile ? () => setEditingProfile(false) : null}
+        />
+      </main>
+    );
+  }
+
   if (!room) {
     return (
       <main className="app">
         <Home
+          profile={profile}
           onCreateRoom={createRoom}
           onJoinRoom={joinRoom}
+          onEditProfile={() => setEditingProfile(true)}
+          onLogout={handleLogout}
           errorMessage={errorMessage}
         />
       </main>

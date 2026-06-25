@@ -1,22 +1,30 @@
 # Updating the live MillarZard site
 
-This is a branding-only update.
+This update adds the first local profile/login system.
 
-## Easiest update method through GitHub
+## Upload to GitHub
 
-1. Open your GitHub repository: `Millarzard`.
-2. Replace the current project files with the contents of this folder.
-3. Commit the changes with this message:
+Replace the current project files with the contents of this folder, then commit with:
 
 ```text
-Branding cleanup to MillarZard
+Add local profile login system
 ```
 
-Because Netlify and Render are connected to GitHub, they should redeploy automatically.
+Netlify and Render should redeploy automatically.
 
-## What to verify after deploy
+## Important
 
-- The home page title says `MillarZard`.
-- The browser tab says `MillarZard`.
-- The backend URL says `MillarZard server is running`.
-- Creating and joining rooms still works.
+No new environment variables are needed for this version.
+
+The profile is stored in the player's browser using localStorage. That means:
+- It works immediately on the live website.
+- It saves on that device/browser.
+- It is not yet a true cross-device account system.
+
+## Test after deployment
+
+1. Open the Netlify site.
+2. Create a profile.
+3. Create a room.
+4. Finish a game.
+5. Confirm wins/games update on the home screen.

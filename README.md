@@ -307,3 +307,17 @@ Branding cleanup only:
 - Updated backend running message to MillarZard server is running.
 - Updated project/deployment text where needed.
 - Gameplay, rules, deck logic, scoring, bidding, Socket.IO events, and card terms were not changed.
+
+
+## Milestone 13 update
+
+This version adds a first profile/login system without changing gameplay:
+
+- Players create a local profile before entering the room screen.
+- Profile saves name, avatar, wins, and games played in browser localStorage.
+- Create Room and Join Room now use the saved profile name/avatar automatically.
+- Players can edit their saved profile or sign out.
+- Wins and games played update after a completed game.
+- This version does not require a database or extra environment variables.
+- Because it uses browser storage, the profile is saved on that device/browser only.
+- Future upgrade: replace local profiles with Supabase/Firebase accounts for cross-device login.
