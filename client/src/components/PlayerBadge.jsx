@@ -48,20 +48,34 @@ function BidTrickMarkers({ bid, tricksWon }) {
   return <div className="cm-marker-row">{markers}</div>;
 }
 
-function PlayerBadge({ player, isYou, isDealer, isActive, positionClass }) {
+function PlayerBadge({ player, isYou, isDealer, isActive, positionClass = "", seatStyle }) {
   const cardCount = player.cardsLeft ?? "?";
 
   return (
-    <div className={`cm-player ${positionClass} ${isActive ? "cm-player-active" : ""} ${isYou ? "cm-player-you" : ""}`}>
-      <div className="cm-avatar-wrap">
-        <AvatarDisplay avatar={player.avatar} size="small" />
-        {isDealer && <span className="cm-dealer-dot">D</span>}
+    <div
+      className={`cm-player ${positionClass} ${isActive ? "cm-player-active" : ""} ${isYou ? "cm-player-you" : ""}`}
+      style={seatStyle}
+    >
+      <div className="cm-chair" aria-hidden="true">
+        <div className="cm-chair-back" />
+        <div className="cm-seat-body" />
+        <div className="cm-avatar-wrap">
+          <AvatarDisplay avatar={player.avatar} size="seat" seated />
+          {isDealer && <span className="cm-dealer-dot">D</span>}
+        </div>
+        <div className="cm-chair-arm cm-chair-arm-left" />
+        <div className="cm-chair-arm cm-chair-arm-right" />
       </div>
 
       <div className="cm-nameplate">
         <div className="cm-name-row">
-          <strong>{player.name}</strong>
+          <strong>{isYou ? `${player.name} (You)` : player.name}</strong>
           <span>{player.totalScore}</span>
+        </div>
+
+        <div className="cm-seat-stat-grid">
+          <span><small>Bid</small><strong>{player.bid ?? "–"}</strong></span>
+          <span><small>Tricks</small><strong>{player.tricksWon ?? 0}</strong></span>
         </div>
 
         <BidTrickMarkers bid={player.bid} tricksWon={player.tricksWon} />

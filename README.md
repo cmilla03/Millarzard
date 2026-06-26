@@ -1,5 +1,27 @@
 # MillarZard - Milestone 2
 
+## Milestone 16B: No-login demo website
+
+Set `VITE_DEMO_MODE=true` on a separate Netlify deployment to bypass Supabase
+authentication and create a temporary player per browser tab. See
+`DEMO_SETUP.md`. The production deployment remains unchanged when the variable
+is absent.
+
+## Milestone 16A: Seated Table + Avaturn
+
+This build introduces the experimental seated-table presentation based on
+`design/seated-table-reference.png` while preserving the existing game rules.
+
+- Players are arranged in chairs around a responsive oval table.
+- Standard, emoji, and Avaturn avatars share one seated presentation.
+- Avaturn models are framed as upper-body portraits inside the chair.
+- The active chair receives a warm gold glow.
+- Bid, trick, score, dealer, and card-count information remains visible.
+- The current trick stays centered and the local hand stays docked at the bottom.
+- Seat spacing scales from 3 through 12 players.
+- The Standard Builder, optional Avaturn flow, and default-avatar opt-out all work.
+- No scoring, card rules, rooms, Socket.IO events, or Supabase schema were changed.
+
 This version adds deck creation, shuffling, dealing, trump card flipping, and a basic game table screen.
 
 ## What works now

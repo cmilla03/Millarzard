@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import { AvaturnSDK } from "@avaturn/sdk";
 
 const AVATURN_URL = "https://millarzard.avaturn.dev";
+const AVATURN_SDK_URL = "https://cdn.jsdelivr.net/npm/@avaturn/sdk/dist/index.js";
 
 function AvaturnAvatarModal({ onSaveAvatar, onClose }) {
   const containerRef = useRef(null);
@@ -15,6 +15,7 @@ function AvaturnAvatarModal({ onSaveAvatar, onClose }) {
 
     async function loadAvaturn() {
       try {
+        const { AvaturnSDK } = await import(/* @vite-ignore */ AVATURN_SDK_URL);
         const sdk = new AvaturnSDK();
         sdkRef.current = sdk;
 

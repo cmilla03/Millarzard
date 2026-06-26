@@ -130,6 +130,37 @@ function getSeatPosition(index, total, isYou) {
   ][slot] || "cm-seat-top";
 }
 
+function getSeatedPosition(index, total, isYou) {
+  if (isYou) {
+    return {
+      "--seat-x": "50%",
+      "--seat-y": "91%",
+      "--seat-scale": total > 8 ? "0.82" : "1"
+    };
+  }
+
+  const opponentCount = Math.max(total - 1, 1);
+  let angle;
+
+  if (opponentCount === 1) {
+    angle = 270;
+  } else if (opponentCount <= 3) {
+    angle = 180 + (180 * index) / (opponentCount - 1);
+  } else {
+    angle = 150 + (240 * index) / (opponentCount - 1);
+  }
+
+  const radians = (angle * Math.PI) / 180;
+  const x = 50 + Math.cos(radians) * 43;
+  const y = 48 + Math.sin(radians) * 38;
+
+  return {
+    "--seat-x": `${x.toFixed(2)}%`,
+    "--seat-y": `${y.toFixed(2)}%`,
+    "--seat-scale": total >= 10 ? "0.68" : total >= 8 ? "0.78" : total >= 6 ? "0.9" : "1"
+  };
+}
+
 function orderPlayersForTable(players, yourPlayerId) {
   const you = players.find((player) => player.id === yourPlayerId);
   const others = players.filter((player) => player.id !== yourPlayerId);
@@ -215,9 +246,15 @@ function GameTable({
 
       {errorMessage && <p className="cm-error">{errorMessage}</p>}
 
-      <main className="cm-felt-table">
-        <div className="cm-table-shade top-shade" />
-        <div className="cm-table-shade bottom-shade" />
+      <main className={`cm-felt-table cm-player-count-${room.players.length}`}>
+        <div className="cm-room-ambience" aria-hidden="true">
+          <span className="cm-lamp-glow cm-lamp-left" />
+          <span className="cm-lamp-glow cm-lamp-right" />
+        </div>
+
+        <div className="cm-table-oval" aria-hidden="true">
+          <div className="cm-table-inlay" />
+        </div>
 
         {othersWithCounts.map((player, index) => (
           <PlayerBadge
@@ -226,7 +263,7 @@ function GameTable({
             isYou={false}
             isDealer={room.players[room.dealerIndex]?.id === player.id}
             isActive={room.players[room.currentTurnIndex]?.id === player.id && room.phase === "PLAYING"}
-            positionClass={getSeatPosition(index, room.players.length, false)}
+            seatStyle={getSeatedPosition(index, room.players.length, false)}
           />
         ))}
 
@@ -237,6 +274,7 @@ function GameTable({
             isDealer={room.players[room.dealerIndex]?.id === youWithCount.id}
             isActive={room.players[room.currentTurnIndex]?.id === youWithCount.id && room.phase === "PLAYING"}
             positionClass="cm-seat-bottom"
+            seatStyle={getSeatedPosition(0, room.players.length, true)}
           />
         )}
 

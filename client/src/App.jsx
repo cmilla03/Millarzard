@@ -10,6 +10,7 @@ import SupabaseSetupMissing from "./components/SupabaseSetupMissing";
 import { clearProfile, loadProfile, recordCompletedGame, saveProfile } from "./profileStorage";
 import { isSupabaseConfigured, supabase } from "./supabaseClient";
 import { fetchSupabaseProfile, saveSupabaseProfile } from "./supabaseProfiles";
+import { loadOrCreateDemoProfile, resetDemoProfile, saveDemoProfile } from "./demoMode";
 import "./styles.css";
 
 function getGameRecordKey(profileId, roomCode) {
@@ -17,12 +18,19 @@ function getGameRecordKey(profileId, roomCode) {
 }
 
 function App() {
-  const [useLocalMode, setUseLocalMode] = useState(!isSupabaseConfigured);
-  const usingSupabase = isSupabaseConfigured && !useLocalMode;
+  const demoModeEnabled = import.meta.env.VITE_DEMO_MODE === "true";
+  const [useLocalMode, setUseLocalMode] = useState(demoModeEnabled || !isSupabaseConfigured);
+  const usingSupabase = isSupabaseConfigured && !useLocalMode && !demoModeEnabled;
 
   const [authReady, setAuthReady] = useState(!usingSupabase);
   const [session, setSession] = useState(null);
-  const [profile, setProfile] = useState(() => (usingSupabase ? null : loadProfile()));
+  const [profile, setProfile] = useState(() => {
+    if (demoModeEnabled) {
+      return loadOrCreateDemoProfile();
+    }
+
+    return usingSupabase ? null : loadProfile();
+  });
   const [profileLoading, setProfileLoading] = useState(false);
   const [editingProfile, setEditingProfile] = useState(false);
   const [room, setRoom] = useState(null);
@@ -148,7 +156,10 @@ function App() {
 
     async function saveCompletedGame() {
       try {
-        if (usingSupabase && session?.user) {
+        if (demoModeEnabled) {
+          const demoProfile = saveDemoProfile(updatedProfile);
+          setProfile(demoProfile);
+        } else if (usingSupabase && session?.user) {
           const remoteProfile = await saveSupabaseProfile(supabase, session.user, updatedProfile);
           setProfile(remoteProfile);
         } else {
@@ -163,13 +174,16 @@ function App() {
     }
 
     saveCompletedGame();
-  }, [room, yourPlayerId, profile, usingSupabase, session]);
+  }, [room, yourPlayerId, profile, usingSupabase, session, demoModeEnabled]);
 
   async function handleSaveProfile(updatedProfile) {
     setErrorMessage("");
 
     try {
-      if (usingSupabase && session?.user) {
+      if (demoModeEnabled) {
+        const demoProfile = saveDemoProfile(updatedProfile);
+        setProfile(demoProfile);
+      } else if (usingSupabase && session?.user) {
         const remoteProfile = await saveSupabaseProfile(supabase, session.user, updatedProfile);
         setProfile(remoteProfile);
       } else {
@@ -184,6 +198,16 @@ function App() {
   }
 
   async function handleLogout() {
+    if (demoModeEnabled) {
+      setProfile(resetDemoProfile());
+      setEditingProfile(false);
+      setRoom(null);
+      setYourPlayerId(null);
+      setYourHand([]);
+      setErrorMessage("");
+      return;
+    }
+
     if (usingSupabase) {
       await supabase.auth.signOut();
     } else {
@@ -283,6 +307,7 @@ function App() {
       <main className="app">
         <Home
           profile={profile}
+          demoMode={demoModeEnabled}
           onCreateRoom={createRoom}
           onJoinRoom={joinRoom}
           onEditProfile={() => setEditingProfile(true)}

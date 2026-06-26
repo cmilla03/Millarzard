@@ -123,6 +123,7 @@ function ProfileLogin({ existingProfile, onSaveProfile, onCancelEdit }) {
   const [activeTab, setActiveTab] = useState("Face");
   const [error, setError] = useState("");
   const [showAvaturn, setShowAvaturn] = useState(false);
+  const [avatarMode, setAvatarMode] = useState(existingProfile?.avatar?.kind === "avaturn" ? "selfie" : "standard");
 
   function updateAvatar(key, value) {
     setAvatar((current) => ({ ...current, [key]: value }));
@@ -182,8 +183,11 @@ function ProfileLogin({ existingProfile, onSaveProfile, onCancelEdit }) {
         <div className="avatar-choice-cards">
           <button
             type="button"
-            className="avatar-choice-card avatar-choice-card-active"
-            onClick={() => setActiveTab("Face")}
+            className={`avatar-choice-card ${avatarMode === "standard" ? "avatar-choice-card-active" : ""}`}
+            onClick={() => {
+              setAvatarMode("standard");
+              setActiveTab("Face");
+            }}
           >
             <span className="avatar-choice-icon">🎨</span>
             <strong>Standard Builder</strong>
@@ -192,8 +196,11 @@ function ProfileLogin({ existingProfile, onSaveProfile, onCancelEdit }) {
 
           <button
             type="button"
-            className="avatar-choice-card"
-            onClick={() => setShowAvaturn(true)}
+            className={`avatar-choice-card ${avatarMode === "selfie" ? "avatar-choice-card-active" : ""}`}
+            onClick={() => {
+              setAvatarMode("selfie");
+              setShowAvaturn(true);
+            }}
           >
             <span className="avatar-choice-icon">📷</span>
             <strong>Selfie Avatar</strong>
@@ -202,8 +209,11 @@ function ProfileLogin({ existingProfile, onSaveProfile, onCancelEdit }) {
 
           <button
             type="button"
-            className="avatar-choice-card"
-            onClick={() => setAvatar(DEFAULT_AVATAR)}
+            className={`avatar-choice-card ${avatarMode === "default" ? "avatar-choice-card-active" : ""}`}
+            onClick={() => {
+              setAvatarMode("default");
+              setAvatar({ ...DEFAULT_AVATAR });
+            }}
           >
             <span className="avatar-choice-icon">✅</span>
             <strong>Use Default</strong>
@@ -235,16 +245,27 @@ function ProfileLogin({ existingProfile, onSaveProfile, onCancelEdit }) {
             </div>
           </div>
 
-          <button type="button" className="small-button" onClick={randomizeAvatar}>
+          <button type="button" className="small-button" onClick={() => {
+            setAvatarMode("standard");
+            randomizeAvatar();
+          }}>
             Randomize Avatar
           </button>
 
-          <button type="button" className="secondary-button" onClick={() => setShowAvaturn(true)}>
+          <button type="button" className="secondary-button" onClick={() => {
+            setAvatarMode("selfie");
+            setShowAvaturn(true);
+          }}>
             Optional: Create Selfie Avatar
           </button>
         </aside>
 
+        {avatarMode === "standard" ? (
         <div className="profile-builder-card">
+          <div className="avatar-mode-label">
+            <strong>Standard Avatar Builder</strong>
+            <span>No face photo required.</span>
+          </div>
           <div className="avatar-tabs polished-tabs">
             {["Face", "Hair", "Eyes", "Nose", "Mouth", "Accessories", "Background"].map((tab) => (
               <button
@@ -302,6 +323,23 @@ function ProfileLogin({ existingProfile, onSaveProfile, onCancelEdit }) {
             )}
           </div>
         </div>
+        ) : (
+          <div className="profile-builder-card avatar-mode-message-card">
+            {avatarMode === "selfie" ? (
+              <>
+                <h3>Selfie Avatar Selected</h3>
+                <p>Use the optional Avaturn creator, or switch back to the Standard Builder at any time.</p>
+                <button type="button" onClick={() => setShowAvaturn(true)}>Open Avaturn</button>
+              </>
+            ) : (
+              <>
+                <h3>Default Avatar Selected</h3>
+                <p>You can continue with the default avatar now and customize it later.</p>
+                <button type="button" onClick={() => setAvatarMode("standard")}>Customize Instead</button>
+              </>
+            )}
+          </div>
+        )}
       </section>
 
       <div className="profile-actions">
@@ -324,6 +362,7 @@ function ProfileLogin({ existingProfile, onSaveProfile, onCancelEdit }) {
           onClose={() => setShowAvaturn(false)}
           onSaveAvatar={(newAvatar) => {
             setAvatar(newAvatar);
+            setAvatarMode("selfie");
             setShowAvaturn(false);
           }}
         />

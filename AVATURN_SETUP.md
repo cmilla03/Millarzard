@@ -8,6 +8,10 @@ https://millarzard.avaturn.dev
 
 No Netlify environment variable is required for this version.
 
+The browser loads Avaturn's SDK from its documented jsDelivr CDN integration.
+The npm package is intentionally not installed, which avoids registry failures
+during Netlify dependency installation.
+
 ## How it works
 
 - In profile setup/edit profile, click `Create Selfie Avatar`.
@@ -21,3 +25,5 @@ No Netlify environment variable is required for this version.
 - Avaturn returns a GLB model URL.
 - MillarZard displays that GLB using Google's `<model-viewer>` web component.
 - Supabase stores the Avaturn avatar object as JSON in the user's profile.
+- At the game table, the GLB camera is cropped to the head and upper body so the
+  player appears seated in the same chair presentation as standard avatars.

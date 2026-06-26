@@ -9,26 +9,29 @@ function isAvaturnAvatar(avatar) {
   return avatar && typeof avatar === "object" && avatar.kind === "avaturn" && avatar.url;
 }
 
-function AvatarDisplay({ avatar, size = "medium" }) {
+function AvatarDisplay({ avatar, size = "medium", seated = false }) {
   if (isAvaturnAvatar(avatar)) {
     return (
-      <div className={`custom-avatar avaturn-avatar avatar-${size}`} style={{ "--avatar-bg": avatar.bg || "#9dffbf" }}>
+      <div
+        className={`custom-avatar avaturn-avatar avatar-${size} ${seated ? "avatar-seated" : ""}`}
+        style={{ "--avatar-bg": avatar.bg || "#9dffbf" }}
+      >
         <model-viewer
           src={avatar.url}
-          auto-rotate
           interaction-prompt="none"
           exposure="1"
           shadow-intensity="0.25"
-          camera-orbit="0deg 80deg 2.2m"
-          field-of-view="25deg"
-          class="avaturn-model-viewer"
+          camera-orbit={seated ? "0deg 82deg 1.35m" : "0deg 80deg 2.2m"}
+          camera-target={seated ? "0m 1.48m 0m" : "0m 1m 0m"}
+          field-of-view={seated ? "22deg" : "25deg"}
+          className="avaturn-model-viewer"
         />
       </div>
     );
   }
 
   if (!isCustomAvatar(avatar)) {
-    return <div className={`custom-avatar emoji-avatar avatar-${size}`}>{avatar || "🙂"}</div>;
+    return <div className={`custom-avatar emoji-avatar avatar-${size} ${seated ? "avatar-seated" : ""}`}>{avatar || "🙂"}</div>;
   }
 
   const {
@@ -57,7 +60,7 @@ function AvatarDisplay({ avatar, size = "medium" }) {
 
   return (
     <div
-      className={`custom-avatar avatar-${size} avatar-style-${style}`}
+      className={`custom-avatar avatar-${size} avatar-style-${style} ${seated ? "avatar-seated" : ""}`}
       style={{
         "--avatar-bg": bg,
         "--skin": skin,

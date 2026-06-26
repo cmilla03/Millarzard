@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AvatarDisplay from "./AvatarDisplay";
 
-function Home({ profile, onCreateRoom, onJoinRoom, onEditProfile, onLogout, errorMessage }) {
+function Home({ profile, demoMode = false, onCreateRoom, onJoinRoom, onEditProfile, onLogout, errorMessage }) {
   const [roomCode, setRoomCode] = useState("");
 
   function handleCreateRoom(event) {
@@ -23,10 +23,17 @@ function Home({ profile, onCreateRoom, onJoinRoom, onEditProfile, onLogout, erro
 
       {errorMessage && <p className="error">{errorMessage}</p>}
 
+      {demoMode && (
+        <div className="demo-mode-banner">
+          <strong>Demo Mode</strong>
+          <span>No login or Supabase account is being used. Each new tab gets a temporary player.</span>
+        </div>
+      )}
+
       <section className="saved-profile-card">
         <AvatarDisplay avatar={profile.avatar} size="medium" />
         <div className="saved-profile-info">
-          <p className="profile-kicker">Signed in as</p>
+          <p className="profile-kicker">{demoMode ? "Testing as" : "Signed in as"}</p>
           <h2>{profile.name}</h2>
 
           <div className="profile-stat-row">
@@ -40,7 +47,7 @@ function Home({ profile, onCreateRoom, onJoinRoom, onEditProfile, onLogout, erro
             Edit Profile
           </button>
           <button type="button" className="text-button" onClick={onLogout}>
-            Sign out
+            {demoMode ? "New Demo Player" : "Sign out"}
           </button>
         </div>
       </section>
