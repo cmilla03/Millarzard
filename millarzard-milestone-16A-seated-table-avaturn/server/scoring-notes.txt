@@ -1,0 +1,6 @@
+Wizard scoring examples:
+
+Bid 1, tricks 1 => 20 + 10(1) = 30
+Bid 0, tricks 0 => 20 + 10(0) = 20
+Bid 2, tricks 0 => -10 × 2 = -20
+Bid 0, tricks 2 => -10 × 2 = -20
